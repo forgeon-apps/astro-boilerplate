@@ -1,0 +1,116 @@
+---
+import { CTA } from '@/partials/CTA';
+import Base from '@/templates/Base.astro';
+import { AppConfig } from '@/utils/AppConfig';
+import { sortByDate } from '@/utils/Posts';
+
+// Astro's paginate helper type (kept loose so we don't depend on external types)
+type GetStaticPaths = {
+  paginate: (items: any[], opts: { pageSize: number }) => any;
+};
+
+export async function getStaticPaths({ paginate }: GetStaticPaths) {
+  const allPosts = await Astro.glob('./*.md');
+  const sortedPosts = sortByDate(allPosts);
+
+  return paginate(sortedPosts, { pageSize: 6 });
+}
+
+interface Props {
+  page: any;
+}
+
+const { page } = Astro.props as Props;
+
+const titleSuffix = ` - ${AppConfig.site_name}`;
+const titleBase = `Blog page ${page.currentPage}`;
+const title = titleBase + titleSuffix;
+const description =
+  'Paginated blog index built with Astro and Tailwind CSS.';
+---
+
+<Base head={{ title, description }}>
+  <section class="mx-auto w-full max-w-4xl px-4 py-10">
+    <!-- Header -->
+    <header class="mb-6 border-b border-gray-200 pb-4">
+      <h1 class="text-2xl font-semibold tracking-tight text-black">
+        Blog
+      </h1>
+      <p class="mt-2 text-sm text-gray-600">
+        Stories, experiments, and notes from the playground.
+      </p>
+    </header>
+
+    <!-- Post list -->
+    <div class="space-y-6">
+      {page.data.map((post: any) => {
+        const fm = post.frontmatter ?? {};
+        const date = fm.pubDate ? new Date(fm.pubDate) : null;
+
+        return (
+          <article
+            class="border-b border-gray-200 pb-5 last:border-b-0"
+            data-sb-object-id={post.inputPath}
+          >
+            <h2 class="text-lg font-semibold text-black">
+              <a
+                href={post.url}
+                class="underline-offset-2 hover:underline"
+              >
+                {fm.title}
+              </a>
+            </h2>
+
+            {fm.description && (
+              <p class="mt-1 text-sm text-gray-700">
+                {fm.description}
+              </p>
+            )}
+
+            <div class="mt-2 flex flex-wrap items-center gap-3 text-xs text-gray-500">
+              {date && (
+                <time
+                  datetime={date.toISOString()}
+                  class="uppercase tracking-[0.16em]"
+                >
+                  {date.toLocaleDateString()}
+                </time>
+              )}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <!-- Pagination -->
+    <nav class="mt-8 flex items-center justify-between text-xs font-medium uppercase tracking-[0.2em] text-gray-600">
+      <div>
+        {page.url?.prev && (
+          <a
+            href={page.url.prev}
+            class="underline-offset-4 hover:text-black hover:underline"
+          >
+            ← Newer
+          </a>
+        )}
+      </div>
+
+      <div class="text-gray-400">
+        Page {page.currentPage} of {page.lastPage}
+      </div>
+
+      <div>
+        {page.url?.next && (
+          <a
+            href={page.url.next}
+            class="underline-offset-4 hover:text-black hover:underline"
+          >
+            Older →
+          </a>
+        )}
+      </div>
+    </nav>
+  </section>
+
+  <CTA />
+</Base>

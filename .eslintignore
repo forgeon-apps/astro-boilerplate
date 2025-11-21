@@ -1,0 +1,7 @@
+node_modules
+dist
+.build
+public
+
+# Ignore Astro files – let Astro / Prettier handle them separately
+**/*.astro

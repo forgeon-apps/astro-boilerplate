@@ -1,0 +1,49 @@
+---
+import { Navbar } from '@/partials/Navbar';
+import { AppConfig } from '@/utils/AppConfig';
+
+export interface Props {
+  head: {
+    title: string;
+    description: string;
+  };
+}
+
+const {
+  head: { title, description },
+} = Astro.props as Props;
+---
+
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>{title}</title>
+    <meta name='description' content={description} />
+    <meta name='author' content={AppConfig.author} />
+
+    <link rel='alternate' type='application/rss+xml' href='/rss.xml' />
+    <link rel='icon' type='image/x-icon' href='/favicon.ico' />
+  </head>
+  <body class='bg-white text-black'>
+    <Navbar />
+
+    <slot></slot>
+
+    <footer class="mt-10 border-t border-neutral-800 py-6 text-center text-sm text-neutral-500">
+      <p>
+        © {new Date().getFullYear()} Forgeon Playground. Built with
+        <a
+          href="https://astro.build"
+          class="ml-1 underline decoration-dotted underline-offset-4 hover:text-neutral-200"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Astro
+        </a>
+        .
+      </p>
+    </footer>
+
+  </body>
+</html>
