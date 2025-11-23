@@ -46,7 +46,7 @@ const Hero = () => (
             <div className="relative overflow-hidden rounded-2xl border">
               <img
                 className="h-64 w-56 object-cover md:h-72 md:w-60"
-                src="/src/images/astro.jpg"
+                src="/assets/images/astro.jpg"
                 alt="Developer working at a computer in a dark UI environment"
                 loading="lazy"
               />
