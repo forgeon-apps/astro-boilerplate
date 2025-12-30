@@ -121,3 +121,11 @@ Licensed under the MIT License, Copyright © 2024
 ---
 
 Made with ♥ by [Forgeon](https://forgeon.io)
+
+## Deploy Your Own
+
+Deploy your own Astro project with Forgeon.
+
+Deploy the example using [Forgeon](https://forgeon.io?utm_source=github&utm_medium=readme&utm_campaign=forgeon-examples):
+
+[![Deploy with Forgeon](https://forgeon.io/images/button-deploy/png/deploy-to-forgeon-6.png)](https://forgeon.io/projects?import=1&no_upload=1&auto=0&git_url=https%3A%2F%2Fgithub.com%2Fforgeon-apps%2Fastro-boilerplate)
